@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export const Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -5,7 +6,7 @@ export const Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
-    viewBox="0 0 24 24"
+    viewBox="0 0 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
@@ -33,14 +34,6 @@ export const MoonIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <Icon {...props}>
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </Icon>
-);
-
-export const GlobeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <Icon {...props}>
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </Icon>
 );
 
 export const PlusIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (

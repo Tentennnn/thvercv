@@ -4,6 +4,7 @@ import { AppProvider, useAppContext } from './context/AppContext';
 import Header from './components/Header';
 import ResumeForm from './components/ResumeForm';
 import ResumePreview from './components/ResumePreview';
+import TemplateSelector from './components/TemplateSelector';
 
 const AppContent: React.FC = () => {
     const { language } = useAppContext();
@@ -11,6 +12,7 @@ const AppContent: React.FC = () => {
         <div className={language === 'km' ? 'font-khmer' : 'font-sans'}>
             <Header />
             <main className="container mx-auto px-4 py-8">
+                <TemplateSelector />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                     <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
                         <ResumeForm />

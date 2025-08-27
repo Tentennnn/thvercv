@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer, useState, useEffect, useCallback } from 'react';
 import { ResumeData, Theme, Language, Template, Action } from '../types';
 import { translations } from '../lib/i18n';
@@ -72,7 +71,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [resumeData, dispatch] = useReducer(resumeReducer, initialResumeData);
   const [theme, setThemeState] = useState<Theme>('light');
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('km');
   const [template, setTemplate] = useState<Template>('classic');
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     headerTitle: "CV Builder",
@@ -34,6 +33,7 @@ export const translations = {
         selectTemplate: "Select Template",
         classic: "Classic",
         modern: "Modern",
+        khmer: "Khmer",
         downloadPDF: "Download PDF",
         print: "Print CV"
     },
@@ -86,6 +86,7 @@ export const translations = {
         selectTemplate: "ជ្រើសរើសគំរូ",
         classic: "បុរាណ",
         modern: "ទំនើប",
+        khmer: "ខ្មែរ",
         downloadPDF: "ទាញយកជា PDF",
         print: "បោះពុម្ព CV"
     },

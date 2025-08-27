@@ -1,4 +1,3 @@
-
 export interface Skill {
   id: string;
   name: string;
@@ -40,7 +39,7 @@ export interface ResumeData {
 
 export type Theme = 'light' | 'dark';
 export type Language = 'en' | 'km';
-export type Template = 'classic' | 'modern';
+export type Template = 'classic' | 'modern' | 'khmer';
 
 export type Action =
   | { type: 'UPDATE_PROFILE'; payload: { field: keyof ResumeData['profile']; value: string } }
