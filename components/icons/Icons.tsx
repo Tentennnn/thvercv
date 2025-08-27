@@ -6,7 +6,7 @@ export const Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
-    viewBox="0 0 24"
+    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
@@ -14,6 +14,16 @@ export const Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     strokeLinejoin="round"
     {...props}
   />
+);
+
+export const CvIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <path d="M6 2H18C19.1046 2 20 2.89543 20 4V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V4C4 2.89543 4.89543 2 6 2Z" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <rect x="8" y="6" width="4" height="4" rx="1" stroke="#0ea5e9" strokeWidth="2"/>
+        <path d="M14 8H16" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M8 14H16" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M8 17H12" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
 );
 
 export const SunIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (

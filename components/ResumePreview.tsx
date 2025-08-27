@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import { ResumeData, Language } from '../types';
@@ -67,6 +66,28 @@ const ClassicTemplate: React.FC<TemplateProps> = ({ data }) => (
             ))}
             </div>
         </section>
+
+        {data.languages.length > 0 && (
+            <section className="mt-4">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 border-b-2 border-gray-200 pb-1 mb-2">Languages</h3>
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {data.languages.map(lang => (
+                    <p key={lang.id} className="text-gray-700">{lang.name} <span className="text-gray-500">({lang.proficiency})</span></p>
+                ))}
+                </div>
+            </section>
+        )}
+
+        {data.interests.length > 0 && (
+            <section className="mt-4">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 border-b-2 border-gray-200 pb-1 mb-2">Interests</h3>
+                <div className="flex flex-wrap gap-2">
+                {data.interests.map(interest => (
+                    <span key={interest.id} className="bg-gray-200 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">{interest.name}</span>
+                ))}
+                </div>
+            </section>
+        )}
     </div>
 );
 
@@ -91,6 +112,26 @@ const ModernTemplate: React.FC<TemplateProps> = ({ data }) => (
                     </div>
                 </div>
             ))}
+            {data.languages.length > 0 && (
+                <>
+                <hr className="border-gray-600 my-4" />
+                <h3 className="text-md font-bold uppercase tracking-wider mb-2">Languages</h3>
+                {data.languages.map(lang => (
+                    <p key={lang.id} className="text-xs mb-1">{lang.name} - <span className="text-gray-400">{lang.proficiency}</span></p>
+                ))}
+                </>
+            )}
+             {data.interests.length > 0 && (
+                <>
+                <hr className="border-gray-600 my-4" />
+                <h3 className="text-md font-bold uppercase tracking-wider mb-2">Interests</h3>
+                <div className="flex flex-wrap gap-1">
+                {data.interests.map(interest => (
+                    <span key={interest.id} className="text-xs bg-gray-700 rounded px-2 py-0.5">{interest.name}</span>
+                ))}
+                </div>
+                </>
+            )}
         </div>
         <div className="w-2/3 p-4 text-gray-800 dark:text-gray-100">
             <section>
@@ -126,100 +167,121 @@ const ModernTemplate: React.FC<TemplateProps> = ({ data }) => (
     </div>
 );
 
-const KhmerDecorativeBorder: React.FC = () => (
-    <div className="h-2 mt-1 mb-2" style={{
-        backgroundImage: 'url(\'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDYwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgNEg1TTU1IDRINEDNNTI1IDRDMjYuNjY3IDQgMzAgMi41IDMwIDBDMzAgMi41IDMzLjMzMyA0IDM1IDRDMzMuMzMzIDQgMzAgNS41IDMwIDhDMzAgNS41IDI2LjY2NyA0IDI1IDRaIiBzdHJva2U9IiNDNzE5MkYiIHN0cm9rZS13aWR0aD0iMS4yIi8+PHBhdGggZD0iTTUgNEgyNU0zNSA0SDU1IiBzdHJva2U9IiNDMTlBNkIiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==\')',
-        backgroundRepeat: 'repeat-x',
-        backgroundPosition: 'center',
-    }} />
-);
-
 const KhmerTemplate: React.FC<TemplateProps> = ({ data, t }) => (
-    <div 
-        className="bg-white text-gray-900 font-khmer text-[15px] leading-relaxed relative"
-        style={{
-            backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cg fill='%23003366' fill-opacity='0.04'%3e%3cpolygon points='0 24 12 12 0 0'%3e%3c/polygon%3e%3cpolygon points='24 24 12 12 24 0'%3e%3c/polygon%3e%3c/g%3e%3c/svg%3e\")"
-        }}
-    >
-        <div className="absolute inset-4 border border-blue-900/30" aria-hidden="true"></div>
-        <div className="absolute inset-5 border border-red-700/30" aria-hidden="true"></div>
+    <div className="bg-white text-gray-900 font-khmer text-[15px] leading-relaxed">
+        <header className="bg-blue-800 text-white text-center p-8">
+            {data.profile.photo && <img src={data.profile.photo} alt="Profile" className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-md" />}
+            <h1 className="text-4xl font-bold text-white mb-1">{data.profile.name}</h1>
+            <h2 className="text-xl text-blue-200 font-semibold">{data.profile.title}</h2>
+            <div className="flex justify-center flex-wrap text-sm text-blue-100 mt-4 gap-x-6 gap-y-2 font-sans">
+                {data.profile.email && <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                    {data.profile.email}
+                </span>}
+                {data.profile.phone && <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                    {data.profile.phone}
+                </span>}
+                {data.profile.website && <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clipRule="evenodd"></path></svg>
+                    {data.profile.website}
+                </span>}
+            </div>
+        </header>
+        
+        <main className="p-8">
+            {data.summary && (
+                <section className="mb-6">
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.summary')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    <p className="text-gray-700">{data.summary}</p>
+                </section>
+            )}
 
-        <div className="relative p-8">
-            <header className="text-center mb-6 pb-4">
-                 {data.profile.photo && <img src={data.profile.photo} alt="Profile" className="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-blue-800 shadow-md" />}
-                <h1 className="text-4xl font-bold text-blue-900 mb-1">{data.profile.name}</h1>
-                <h2 className="text-xl text-red-700 font-semibold">{data.profile.title}</h2>
-                <div className="flex justify-center flex-wrap text-xs text-gray-600 mt-3 gap-x-4 gap-y-1 font-sans">
-                    {data.profile.email && <span className="flex items-center gap-1.5">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
-                        {data.profile.email}
-                    </span>}
-                    {data.profile.phone && <span className="flex items-center gap-1.5">
-                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
-                        {data.profile.phone}
-                    </span>}
-                    {data.profile.website && <span className="flex items-center gap-1.5">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clipRule="evenodd"></path></svg>
-                        {data.profile.website}
-                    </span>}
-                </div>
-            </header>
-            
-            <main>
-                {data.summary && (
-                    <section className="mb-5">
-                        <h3 className="text-xl font-bold text-blue-900">{t('form.summary')}</h3>
-                        <KhmerDecorativeBorder />
-                        <p className="text-gray-700">{data.summary}</p>
-                    </section>
-                )}
-
-                {data.experience.length > 0 && (
-                     <section className="mb-5">
-                        <h3 className="text-xl font-bold text-blue-900">{t('form.experience')}</h3>
-                        <KhmerDecorativeBorder />
-                        {data.experience.map(exp => (
-                            <div key={exp.id} className="mb-4">
-                                <div className="flex justify-between items-baseline">
-                                    <h4 className="text-lg font-semibold text-gray-800">{exp.title}</h4>
-                                    <p className="text-sm text-gray-600 flex-shrink-0 ml-4 font-sans">{exp.startDate} - {exp.endDate}</p>
-                                </div>
-                                <p className="text-md text-red-800">{exp.company}</p>
-                                <p className="text-sm text-gray-600 mt-1">{exp.description}</p>
+            {data.experience.length > 0 && (
+                <section className="mb-6">
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.experience')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    {data.experience.map(exp => (
+                        <div key={exp.id} className="mb-4">
+                            <div className="flex justify-between items-baseline">
+                                <h4 className="text-lg font-semibold text-gray-800">{exp.title}</h4>
+                                <p className="text-sm text-gray-600 flex-shrink-0 ml-4 font-sans">{exp.startDate} - {exp.endDate}</p>
                             </div>
-                        ))}
-                    </section>
-                )}
-
-                 {data.education.length > 0 && (
-                    <section className="mb-5">
-                        <h3 className="text-xl font-bold text-blue-900">{t('form.education')}</h3>
-                        <KhmerDecorativeBorder />
-                        {data.education.map(edu => (
-                             <div key={edu.id} className="mb-3">
-                                 <div className="flex justify-between items-baseline">
-                                    <h4 className="text-lg font-semibold text-gray-800">{edu.degree}</h4>
-                                    <p className="text-sm text-gray-600 flex-shrink-0 ml-4 font-sans">{edu.startDate} - {edu.endDate}</p>
-                                </div>
-                                <p className="text-md text-red-800">{edu.institution}</p>
-                            </div>
-                        ))}
-                    </section>
-                )}
-
-                {data.skills.length > 0 && (
-                    <section>
-                        <h3 className="text-xl font-bold text-blue-900">{t('form.skills')}</h3>
-                        <KhmerDecorativeBorder />
-                        <div className="flex flex-wrap gap-2">
-                            {data.skills.map(skill => (
-                                <span key={skill.id} className="bg-blue-100 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">{skill.name}</span>
-                            ))}
+                            <p className="text-md text-gray-700 font-semibold">{exp.company}</p>
+                            <p className="text-sm text-gray-600 mt-1">{exp.description}</p>
                         </div>
-                    </section>
-                )}
-            </main>
-        </div>
+                    ))}
+                </section>
+            )}
+
+            {data.education.length > 0 && (
+                <section className="mb-6">
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.education')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    {data.education.map(edu => (
+                        <div key={edu.id} className="mb-3">
+                            <div className="flex justify-between items-baseline">
+                                <h4 className="text-lg font-semibold text-gray-800">{edu.degree}</h4>
+                                <p className="text-sm text-gray-600 flex-shrink-0 ml-4 font-sans">{edu.startDate} - {edu.endDate}</p>
+                            </div>
+                            <p className="text-md text-gray-700">{edu.institution}</p>
+                        </div>
+                    ))}
+                </section>
+            )}
+
+            {data.skills.length > 0 && (
+                <section className="mb-6">
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.skills')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {data.skills.map(skill => (
+                            <span key={skill.id} className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">{skill.name}</span>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {data.languages.length > 0 && (
+                <section className="mb-6">
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.languages')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2">
+                        {data.languages.map(lang => (
+                            <div key={lang.id}>
+                                <p className="text-md font-semibold text-gray-800">{lang.name}</p>
+                                <p className="text-sm text-gray-600">{lang.proficiency}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {data.interests.length > 0 && (
+                <section>
+                    <div className="flex items-center mb-3">
+                        <h3 className="text-xl font-bold text-blue-800 uppercase tracking-wider">{t('form.interests')}</h3>
+                        <div className="flex-grow h-px bg-gray-200 ml-4"></div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {data.interests.map(interest => (
+                            <span key={interest.id} className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">{interest.name}</span>
+                        ))}
+                    </div>
+                </section>
+            )}
+        </main>
     </div>
 );
 
@@ -228,29 +290,48 @@ const ResumePreview: React.FC = () => {
     const { resumeData, template, t, language } = useAppContext();
     const resumeRef = React.useRef<HTMLDivElement>(null);
     const [isDownloading, setIsDownloading] = React.useState(false);
+    const [isSizeModalOpen, setIsSizeModalOpen] = React.useState(false);
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = (paperSize: 'a4' | 'letter') => {
+        setIsSizeModalOpen(false);
         const input = resumeRef.current;
         if (!input) return;
 
         setIsDownloading(true);
         const { jsPDF } = jspdf;
         
-        // Temporarily apply light mode for consistent PDF output
         const root = document.documentElement;
         const wasDark = root.classList.contains('dark');
-        if(wasDark) root.classList.remove('dark');
+        if (wasDark) root.classList.remove('dark');
 
         html2canvas(input, { scale: 3, useCORS: true }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF({ orientation: 'p', unit: 'px', format: [canvas.width, canvas.height] });
-            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+            const pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'pt',
+                format: paperSize
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const finalImgWidth = imgWidth * ratio;
+            const finalImgHeight = imgHeight * ratio;
+
+            const x = (pdfWidth - finalImgWidth) / 2;
+            const y = (pdfHeight - finalImgHeight) / 2;
+
+            pdf.addImage(imgData, 'PNG', x, y, finalImgWidth, finalImgHeight);
             pdf.save("resume.pdf");
+            
             setIsDownloading(false);
-            if(wasDark) root.classList.add('dark'); // Restore dark mode if it was enabled
+            if (wasDark) root.classList.add('dark');
         }).catch(() => {
             setIsDownloading(false);
-            if(wasDark) root.classList.add('dark');
+            if (wasDark) root.classList.add('dark');
         });
     };
     
@@ -285,19 +366,39 @@ const ResumePreview: React.FC = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-            <div className="flex justify-end items-center mb-4 gap-2">
-                 <button onClick={handleDownloadPDF} disabled={isDownloading} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:bg-green-400 transition-colors">
-                    {isDownloading ? 'Downloading...' : t('preview.downloadPDF')}
-                </button>
-                <button onClick={handlePrint} className="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-semibold hover:bg-gray-700 transition-colors">{t('preview.print')}</button>
-            </div>
-            <div className="aspect-[210/297] border border-gray-200 dark:border-gray-700 overflow-auto bg-gray-100 dark:bg-gray-900">
-                 <div ref={resumeRef} className={language === 'km' ? 'font-khmer' : 'font-sans'}>
-                    {templates[template]}
+        <React.Fragment>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div className="flex justify-end items-center mb-4 gap-2">
+                    <button onClick={() => setIsSizeModalOpen(true)} disabled={isDownloading} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:bg-green-400 transition-colors">
+                        {isDownloading ? 'Downloading...' : t('preview.downloadPDF')}
+                    </button>
+                    <button onClick={handlePrint} className="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-semibold hover:bg-gray-700 transition-colors">{t('preview.print')}</button>
+                </div>
+                <div className="aspect-[210/297] border border-gray-200 dark:border-gray-700 overflow-auto bg-gray-100 dark:bg-gray-900">
+                    <div ref={resumeRef} className={language === 'km' ? 'font-khmer' : 'font-sans'}>
+                        {templates[template]}
+                    </div>
                 </div>
             </div>
-        </div>
+            {isSizeModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm m-4">
+                        <h3 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">Choose Paper Size</h3>
+                        <div className="flex justify-around gap-4">
+                            <button onClick={() => handleDownloadPDF('a4')} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                A4
+                            </button>
+                            <button onClick={() => handleDownloadPDF('letter')} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                Letter
+                            </button>
+                        </div>
+                        <button onClick={() => setIsSizeModalOpen(false)} className="mt-4 w-full px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+        </React.Fragment>
     );
 };
 

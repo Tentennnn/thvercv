@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 // FIX: Import `ResumeData` to resolve the type error in `handleProfileChange` where `ResumeData` was not found.
-import { Experience, Education, Skill, ResumeData } from '../types';
+import { Experience, Education, Skill, ResumeData, LanguageItem, Interest } from '../types';
 import { PlusIcon, TrashIcon, ChevronDownIcon, PhotoIcon, StarIcon } from './icons/Icons';
 
 interface AccordionSectionProps {
@@ -98,7 +98,7 @@ const ResumeForm: React.FC = () => {
     dispatch({ type: 'UPDATE_SUMMARY', payload: e.target.value });
   };
   
-  const handleItemChange = (section: 'experience' | 'education' | 'skills', id: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleItemChange = (section: 'experience' | 'education' | 'skills' | 'languages' | 'interests', id: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       dispatch({ type: 'UPDATE_ITEM', payload: { section, id, updates: { [e.target.name]: e.target.value } } });
   };
   
@@ -106,15 +106,17 @@ const ResumeForm: React.FC = () => {
       dispatch({ type: 'UPDATE_ITEM', payload: { section: 'skills', id, updates: { level } } });
   };
 
-  const addItem = (section: 'experience' | 'education' | 'skills') => {
+  const addItem = (section: 'experience' | 'education' | 'skills' | 'languages' | 'interests') => {
     const newItem = { id: new Date().toISOString() };
     if (section === 'experience') (newItem as Experience) = { ...newItem, title: '', company: '', startDate: '', endDate: '', description: '' };
     if (section === 'education') (newItem as Education) = { ...newItem, degree: '', institution: '', startDate: '', endDate: '' };
     if (section === 'skills') (newItem as Skill) = { ...newItem, name: '', level: 3 };
+    if (section === 'languages') (newItem as LanguageItem) = { ...newItem, name: '', proficiency: '' };
+    if (section === 'interests') (newItem as Interest) = { ...newItem, name: '' };
     dispatch({ type: 'ADD_ITEM', payload: { section, item: newItem } });
   };
 
-  const deleteItem = (section: 'experience' | 'education' | 'skills', id: string) => {
+  const deleteItem = (section: 'experience' | 'education' | 'skills' | 'languages' | 'interests', id: string) => {
     dispatch({ type: 'DELETE_ITEM', payload: { section, id } });
   };
 
@@ -221,6 +223,38 @@ const ResumeForm: React.FC = () => {
            <button onClick={() => addItem('skills')} className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold hover:underline mt-2">
               <PlusIcon /> {t('form.addSkill')}
           </button>
+      </AccordionSection>
+      <AccordionSection title={t('form.languages')}>
+        {resumeData.languages.map((lang) => (
+          <div key={lang.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg space-y-4 relative bg-gray-50 dark:bg-gray-800/50">
+            <button onClick={() => deleteItem('languages', lang.id)} className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 transition-colors" aria-label={`Delete language ${lang.name}`}>
+              <TrashIcon />
+            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormInput label={t('form.languageName')} name="name" value={lang.name} onChange={(e) => handleItemChange('languages', lang.id, e)} placeholder={t('placeholders.language')} />
+              <FormInput label={t('form.proficiency')} name="proficiency" value={lang.proficiency} onChange={(e) => handleItemChange('languages', lang.id, e)} placeholder={t('placeholders.proficiency')} />
+            </div>
+          </div>
+        ))}
+        <button onClick={() => addItem('languages')} className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold hover:underline mt-2">
+          <PlusIcon /> {t('form.addLanguage')}
+        </button>
+      </AccordionSection>
+
+      <AccordionSection title={t('form.interests')}>
+        {resumeData.interests.map((interest) => (
+          <div key={interest.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg flex items-end justify-between gap-4 bg-gray-50 dark:bg-gray-800/50">
+            <div className="flex-grow">
+              <FormInput label={t('form.interestName')} name="name" value={interest.name} onChange={(e) => handleItemChange('interests', interest.id, e)} placeholder={t('placeholders.interest')} />
+            </div>
+            <button onClick={() => deleteItem('interests', interest.id)} className="p-1 text-gray-400 hover:text-red-500" aria-label={`Delete interest ${interest.name}`}>
+              <TrashIcon />
+            </button>
+          </div>
+        ))}
+        <button onClick={() => addItem('interests')} className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold hover:underline mt-2">
+          <PlusIcon /> {t('form.addInterest')}
+        </button>
       </AccordionSection>
     </div>
   );

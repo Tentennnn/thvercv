@@ -28,6 +28,13 @@ export const translations = {
       addSkill: "Add Skill",
       skillName: "Skill Name (e.g., React)",
       skillLevel: "Proficiency Level",
+      languages: "Languages",
+      addLanguage: "Add Language",
+      languageName: "Language",
+      proficiency: "Proficiency",
+      interests: "Interests",
+      addInterest: "Add Interest",
+      interestName: "Interest",
     },
     preview: {
         selectTemplate: "Select Template",
@@ -38,18 +45,21 @@ export const translations = {
         print: "Print CV"
     },
     placeholders: {
-      name: "e.g., Jane Doe",
+      name: "e.g., Thver CV",
       title: "e.g., Senior Frontend Developer",
-      email: "jane.doe@example.com",
-      phone: "+1 234 567 890",
-      website: "janedoe.com",
-      location: "San Francisco, CA",
+      email: "thver.cv@example.com",
+      phone: "+855 123 456",
+      website: "thvercv.com",
+      location: "Phnom Penh",
       jobTitle: "e.g., Software Engineer",
       company: "e.g., Google",
       description: "Describe your responsibilities and achievements.",
       degree: "e.g., Bachelor of Science in Computer Science",
       institution: "e.g., University of California, Berkeley",
-      skill: "e.g., TypeScript"
+      skill: "e.g., TypeScript",
+      language: "e.g., English",
+      proficiency: "e.g., Fluent",
+      interest: "e.g., Photography",
     }
   },
   km: {
@@ -81,6 +91,13 @@ export const translations = {
       addSkill: "បន្ថែមជំនាញ",
       skillName: "ឈ្មោះជំនាញ (ឧ. React)",
       skillLevel: "កម្រិតជំនាញ",
+      languages: "ភាសា",
+      addLanguage: "បន្ថែមភាសា",
+      languageName: "ភាសា",
+      proficiency: "កម្រិត",
+      interests: "ចំណូលចិត្ត",
+      addInterest: "បន្ថែមចំណូលចិត្ត",
+      interestName: "ចំណូលចិត្ត",
     },
     preview: {
         selectTemplate: "ជ្រើសរើសគំរូ",
@@ -102,7 +119,10 @@ export const translations = {
       description: "ពិពណ៌នាអំពីការទទួលខុសត្រូវ និងសមិទ្ធិផលរបស់អ្នក។",
       degree: "ឧ. បរិញ្ញាបត្រវិទ្យាសាស្ត្រកុំព្យូទ័រ",
       institution: "ឧ. សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ",
-      skill: "ឧ. TypeScript"
+      skill: "ឧ. TypeScript",
+      language: "ឧ. ភាសាអង់គ្លេស",
+      proficiency: "ឧ. ស្ទាត់ជំនាញ",
+      interest: "ឧ. ការថតរូប",
     }
   },
 };

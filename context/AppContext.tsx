@@ -4,13 +4,13 @@ import { translations } from '../lib/i18n';
 
 const initialResumeData: ResumeData = {
   profile: {
-    name: 'Jane Doe',
-    title: 'Senior Frontend Developer',
+    name: 'LIM CHILONG',
+    title: 'GRAPHIC DESIGNER',
     photo: null,
-    email: 'jane.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    website: 'janedoe.dev',
-    location: 'San Francisco, CA',
+    email: 'thver.cv@example.com',
+    phone: '+855 123 456 7',
+    website: 'tenten.dev',
+    location: 'Phnom Penh',
   },
   summary: 'Experienced Frontend Developer with a demonstrated history of working in the computer software industry. Skilled in React, TypeScript, and Tailwind CSS. Strong engineering professional with a Bachelor of Science (B.S.) focused in Computer Science.',
   experience: [
@@ -20,10 +20,17 @@ const initialResumeData: ResumeData = {
     { id: 'edu1', degree: 'Bachelor of Science in Computer Science', institution: 'State University', startDate: '2014-09', endDate: '2018-05' },
   ],
   skills: [
-    { id: 'skill1', name: 'React', level: 5 },
-    { id: 'skill2', name: 'TypeScript', level: 5 },
-    { id: 'skill3', name: 'Tailwind CSS', level: 4 },
-    { id: 'skill4', name: 'Node.js', level: 3 },
+    { id: 'skill1', name: 'PHOTOSHOP', level: 5 },
+    { id: 'skill2', name: 'ILLUSTRATOR', level: 5 },
+    { id: 'skill3', name: 'BLEDER', level: 4 },
+  ],
+  languages: [
+    { id: 'lang1', name: 'English', proficiency: 'Fluent' },
+    { id: 'lang2', name: 'Khmer', proficiency: 'Native' },
+  ],
+  interests: [
+    { id: 'int1', name: 'Photography' },
+    { id: 'int2', name: 'Minimalist Design' },
   ],
 };
 

@@ -21,6 +21,17 @@ export interface Education {
   endDate: string;
 }
 
+export interface LanguageItem {
+  id: string;
+  name: string;
+  proficiency: string;
+}
+
+export interface Interest {
+  id: string;
+  name: string;
+}
+
 export interface ResumeData {
   profile: {
     name: string;
@@ -35,6 +46,8 @@ export interface ResumeData {
   experience: Experience[];
   education: Education[];
   skills: Skill[];
+  languages: LanguageItem[];
+  interests: Interest[];
 }
 
 export type Theme = 'light' | 'dark';
@@ -45,6 +58,6 @@ export type Action =
   | { type: 'UPDATE_PROFILE'; payload: { field: keyof ResumeData['profile']; value: string } }
   | { type: 'UPDATE_PHOTO'; payload: string | null }
   | { type: 'UPDATE_SUMMARY'; payload: string }
-  | { type: 'ADD_ITEM'; payload: { section: 'experience' | 'education' | 'skills'; item: any } }
-  | { type: 'UPDATE_ITEM'; payload: { section: 'experience' | 'education' | 'skills'; id: string; updates: any } }
-  | { type: 'DELETE_ITEM'; payload: { section: 'experience' | 'education' | 'skills'; id: string } };
+  | { type: 'ADD_ITEM'; payload: { section: 'experience' | 'education' | 'skills' | 'languages' | 'interests'; item: any } }
+  | { type: 'UPDATE_ITEM'; payload: { section: 'experience' | 'education' | 'skills' | 'languages' | 'interests'; id: string; updates: any } }
+  | { type: 'DELETE_ITEM'; payload: { section: 'experience' | 'education' | 'skills' | 'languages' | 'interests'; id: string } };

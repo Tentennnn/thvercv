@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
-import { SunIcon, MoonIcon } from './icons/Icons';
+import { SunIcon, MoonIcon, CvIcon } from './icons/Icons';
 
 const Header: React.FC = () => {
   const { theme, setTheme, language, setLanguage, t } = useAppContext();
@@ -17,7 +17,10 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{t('headerTitle')}</h1>
+        <div className="flex items-center gap-3">
+          <CvIcon className="h-8 w-8 text-gray-800 dark:text-white" />
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{t('headerTitle')}</h1>
+        </div>
         <div className="flex items-center space-x-2">
           <button
             onClick={toggleLanguage}
