@@ -1,0 +1,5 @@
+{
+  "name": "AI Powered CV Builder",
+  "description": "A modern, AI-powered CV/Resume builder that helps you create professional resumes with ease. Choose from multiple templates, toggle between dark and light modes, and download your CV as a PDF. Supports both English and Khmer languages.",
+  "requestFramePermissions": []
+}
