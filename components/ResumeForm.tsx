@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Experience, Education, Skill, ResumeData, LanguageItem, Interest } from '../types';
 import { PlusIcon, TrashIcon, ChevronDownIcon, PhotoIcon, StarIcon, MagicIcon, SpinnerIcon } from './icons/Icons';
-import { GoogleGenAI } from "@google/genai";
 
 interface AccordionSectionProps {
   title: string;
@@ -129,12 +128,16 @@ const ResumeForm: React.FC = () => {
   const handleGenerateSummary = async () => {
     setIsGeneratingSummary(true);
     try {
-        if (!process.env.API_KEY) {
+        const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
+
+        if (!apiKey) {
             alert('API Key is not configured. Please set the API_KEY environment variable.');
             setIsGeneratingSummary(false);
             return;
         }
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+        const { GoogleGenAI } = await import('@google/genai');
+        const ai = new GoogleGenAI({ apiKey });
 
         const experienceText = resumeData.experience.map(e => `${e.title} at ${e.company}`).join(', ');
         const skillsText = resumeData.skills.map(s => s.name).join(', ');
