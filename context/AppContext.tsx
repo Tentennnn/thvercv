@@ -71,6 +71,8 @@ interface AppContextType {
   template: Template;
   setTemplate: (template: Template) => void;
   t: (key: string) => string;
+  downloadCount: number;
+  incrementDownloadCount: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -80,6 +82,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [theme, setThemeState] = useState<Theme>('light');
   const [language, setLanguage] = useState<Language>('km');
   const [template, setTemplate] = useState<Template>('classic');
+  const [downloadCount, setDownloadCount] = useState<number>(() => {
+    try {
+        const item = window.localStorage.getItem('downloadCount');
+        // Start with a believable number if it's the first visit
+        return item ? parseInt(item, 10) : 137; 
+    } catch (error) {
+        console.error("Failed to read download count from localStorage", error);
+        return 137;
+    }
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -89,6 +101,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       root.classList.remove('dark');
     }
   }, [theme]);
+
+  useEffect(() => {
+    try {
+        window.localStorage.setItem('downloadCount', downloadCount.toString());
+    } catch (error) {
+        console.error("Failed to save download count to localStorage", error);
+    }
+  }, [downloadCount]);
+
+  const incrementDownloadCount = () => {
+    setDownloadCount(prevCount => prevCount + 1);
+  };
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -105,7 +129,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [language]);
 
   return (
-    <AppContext.Provider value={{ resumeData, dispatch, theme, setTheme, language, setLanguage, template, setTemplate, t }}>
+    <AppContext.Provider value={{ resumeData, dispatch, theme, setTheme, language, setLanguage, template, setTemplate, t, downloadCount, incrementDownloadCount }}>
       {children}
     </AppContext.Provider>
   );

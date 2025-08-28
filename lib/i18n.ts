@@ -60,6 +60,9 @@ export const translations = {
       language: "e.g., English",
       proficiency: "e.g., Fluent",
       interest: "e.g., Photography",
+    },
+    footer: {
+      downloads: "Total Resumes Downloaded by Users:"
     }
   },
   km: {
@@ -123,6 +126,9 @@ export const translations = {
       language: "ឧ. ភាសាអង់គ្លេស",
       proficiency: "ឧ. ស្ទាត់ជំនាញ",
       interest: "ឧ. ការថតរូប",
+    },
+    footer: {
+      downloads: "ចំនួនប្រវត្តិរូបសង្ខេបដែលបានទាញយកសរុប:"
     }
   },
 };

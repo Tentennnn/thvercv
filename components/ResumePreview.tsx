@@ -287,13 +287,27 @@ const KhmerTemplate: React.FC<TemplateProps> = ({ data, t }) => (
 
 
 const ResumePreview: React.FC = () => {
-    const { resumeData, template, t, language } = useAppContext();
+    const { resumeData, template, t, language, incrementDownloadCount } = useAppContext();
     const resumeRef = React.useRef<HTMLDivElement>(null);
     const [isDownloading, setIsDownloading] = React.useState(false);
-    const [isSizeModalOpen, setIsSizeModalOpen] = React.useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+    const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleDownloadPDF = (paperSize: 'a4' | 'letter') => {
-        setIsSizeModalOpen(false);
+        setIsDropdownOpen(false);
         const input = resumeRef.current;
         if (!input) return;
 
@@ -326,6 +340,7 @@ const ResumePreview: React.FC = () => {
 
             pdf.addImage(imgData, 'PNG', x, y, finalImgWidth, finalImgHeight);
             pdf.save("resume.pdf");
+            incrementDownloadCount();
             
             setIsDownloading(false);
             if (wasDark) root.classList.add('dark');
@@ -369,9 +384,32 @@ const ResumePreview: React.FC = () => {
         <React.Fragment>
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
                 <div className="flex justify-end items-center mb-4 gap-2">
-                    <button onClick={() => setIsSizeModalOpen(true)} disabled={isDownloading} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:bg-green-400 transition-colors">
-                        {isDownloading ? 'Downloading...' : t('preview.downloadPDF')}
-                    </button>
+                    <div className="relative" ref={dropdownRef}>
+                        <button
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            disabled={isDownloading}
+                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:bg-green-400 transition-colors"
+                            aria-haspopup="true"
+                            aria-expanded={isDropdownOpen}
+                        >
+                            {isDownloading ? 'Downloading...' : t('preview.downloadPDF')}
+                            <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                        </button>
+                        {isDropdownOpen && (
+                            <div className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                                <div className="py-1">
+                                    <button onClick={() => handleDownloadPDF('a4')} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">
+                                        A4
+                                    </button>
+                                    <button onClick={() => handleDownloadPDF('letter')} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">
+                                        Letter
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <button onClick={handlePrint} className="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-semibold hover:bg-gray-700 transition-colors">{t('preview.print')}</button>
                 </div>
                 <div className="aspect-[210/297] border border-gray-200 dark:border-gray-700 overflow-auto bg-gray-100 dark:bg-gray-900">
@@ -380,24 +418,6 @@ const ResumePreview: React.FC = () => {
                     </div>
                 </div>
             </div>
-            {isSizeModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm m-4">
-                        <h3 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">Choose Paper Size</h3>
-                        <div className="flex justify-around gap-4">
-                            <button onClick={() => handleDownloadPDF('a4')} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                A4
-                            </button>
-                            <button onClick={() => handleDownloadPDF('letter')} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                Letter
-                            </button>
-                        </div>
-                        <button onClick={() => setIsSizeModalOpen(false)} className="mt-4 w-full px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            )}
         </React.Fragment>
     );
 };
