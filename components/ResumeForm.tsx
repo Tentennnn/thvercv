@@ -40,7 +40,7 @@ const FormInput: React.FC<{
     type?: string;
 }> = ({ label, name, value, onChange, placeholder = '', type = 'text' }) => (
     <div>
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+        <label htmlFor={name} className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200 mb-1.5">{label}</label>
         <input
             type={type}
             id={name}
@@ -48,7 +48,7 @@ const FormInput: React.FC<{
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6 bg-white dark:bg-gray-800 transition-shadow duration-200"
         />
     </div>
 );
@@ -63,7 +63,7 @@ const FormTextarea: React.FC<{
     srOnlyLabel?: boolean;
 }> = ({ label, name, value, onChange, placeholder = '', rows = 4, srOnlyLabel = false }) => (
     <div>
-        <label htmlFor={name} className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ${srOnlyLabel ? 'sr-only' : ''}`}>{label}</label>
+        <label htmlFor={name} className={`block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200 mb-1.5 ${srOnlyLabel ? 'sr-only' : ''}`}>{label}</label>
         <textarea
             id={name}
             name={name}
@@ -71,7 +71,7 @@ const FormTextarea: React.FC<{
             onChange={onChange}
             placeholder={placeholder}
             rows={rows}
-            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6 bg-white dark:bg-gray-800 transition-shadow duration-200"
             aria-label={srOnlyLabel ? label : undefined}
         />
     </div>
@@ -81,6 +81,7 @@ const FormTextarea: React.FC<{
 const ResumeForm: React.FC = () => {
   const { resumeData, dispatch, t } = useAppContext();
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [hoveredSkill, setHoveredSkill] = useState<{ id: string; level: number } | null>(null);
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -166,6 +167,14 @@ const ResumeForm: React.FC = () => {
     } finally {
         setIsGeneratingSummary(false);
     }
+  };
+
+  const skillLevelLabels: Record<number, string> = {
+    1: t('form.skillLevels.1'),
+    2: t('form.skillLevels.2'),
+    3: t('form.skillLevels.3'),
+    4: t('form.skillLevels.4'),
+    5: t('form.skillLevels.5'),
   };
 
   return (
@@ -275,13 +284,32 @@ const ResumeForm: React.FC = () => {
                   </div>
                   <div className="flex items-center justify-between w-full sm:w-auto">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('form.skillLevel')}</label>
-                        <div className="flex items-center gap-1">
-                            {[1, 2, 3, 4, 5].map(level => (
-                                <button key={level} onClick={() => handleSkillLevelChange(skill.id, level)} aria-label={`Set skill level to ${level}`}>
-                                    <StarIcon className={`w-6 h-6 transition-colors ${level <= skill.level ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'}`} />
-                                </button>
-                            ))}
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1.5">
+                            {t('form.skillLevel')}
+                            <span className="ml-2 font-normal text-gray-500 dark:text-gray-400">
+                                - {skillLevelLabels[skill.level]}
+                            </span>
+                        </label>
+                        <div
+                            className="flex items-center gap-1"
+                            onMouseLeave={() => setHoveredSkill(null)}
+                        >
+                            {[1, 2, 3, 4, 5].map(level => {
+                                const isFilled = (hoveredSkill && hoveredSkill.id === skill.id)
+                                    ? level <= hoveredSkill.level
+                                    : level <= skill.level;
+                                return (
+                                    <button 
+                                        key={level} 
+                                        onClick={() => handleSkillLevelChange(skill.id, level)}
+                                        onMouseEnter={() => setHoveredSkill({ id: skill.id, level })}
+                                        aria-label={`Set skill level to ${level}: ${skillLevelLabels[level]}`}
+                                        title={skillLevelLabels[level]}
+                                    >
+                                        <StarIcon className={`w-6 h-6 transition-colors ${isFilled ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`} />
+                                    </button>
+                                );
+                            })}
                         </div>
                       </div>
                       <button onClick={() => deleteItem('skills', skill.id)} className="p-1 text-gray-400 hover:text-red-500 sm:ml-4" aria-label={`Delete skill ${skill.name}`}>
