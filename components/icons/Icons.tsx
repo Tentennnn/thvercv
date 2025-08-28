@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export const Icon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -79,5 +78,24 @@ export const PhotoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 export const StarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <Icon {...props} fill="currentColor">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </Icon>
+);
+
+export const MagicIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <Icon {...props} width="16" height="16" viewBox="0 0 24 24">
+        <path d="M12 2.69l.34 2.39 2.4 1.2-1.82 2.11 1.2 2.4-2.39.34-1.2 2.4-2.11-1.82-2.4 1.2.34-2.39-1.2-2.4 1.82-2.11-1.2-2.4 2.39-.34 1.2-2.4zM22 12l-2-2-2 2 2 2 2-2zM8 22l2-2 2 2-2 2-2-2zM2 8l2-2 2 2-2 2-2-2z" />
+    </Icon>
+);
+
+export const SpinnerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <Icon {...props} className={`animate-spin ${props.className}`}>
+        <line x1="12" y1="2" x2="12" y2="6" />
+        <line x1="12" y1="18" x2="12" y2="22" />
+        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+        <line x1="2" y1="12" x2="6" y2="12" />
+        <line x1="18" y1="12" x2="22" y2="12" />
+        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
     </Icon>
 );

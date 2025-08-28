@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
-// FIX: Import `ResumeData` to resolve the type error in `handleProfileChange` where `ResumeData` was not found.
 import { Experience, Education, Skill, ResumeData, LanguageItem, Interest } from '../types';
-import { PlusIcon, TrashIcon, ChevronDownIcon, PhotoIcon, StarIcon } from './icons/Icons';
+import { PlusIcon, TrashIcon, ChevronDownIcon, PhotoIcon, StarIcon, MagicIcon, SpinnerIcon } from './icons/Icons';
+import { GoogleGenAI } from "@google/genai";
 
 interface AccordionSectionProps {
   title: string;
   children: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
-const AccordionSection: React.FC<AccordionSectionProps> = ({ title, children }) => {
+const AccordionSection: React.FC<AccordionSectionProps> = ({ title, children, actions }) => {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -19,8 +20,11 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({ title, children }) 
                 onClick={() => setIsOpen(!isOpen)}
                 aria-expanded={isOpen}
             >
-                {title}
-                <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                <span>{title}</span>
+                <div className="flex items-center gap-4">
+                    {actions}
+                    <ChevronDownIcon className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                </div>
             </button>
             {isOpen && <div className="pb-4 space-y-4">{children}</div>}
         </div>
@@ -76,6 +80,7 @@ const FormTextarea: React.FC<{
 
 const ResumeForm: React.FC = () => {
   const { resumeData, dispatch, t } = useAppContext();
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -120,6 +125,49 @@ const ResumeForm: React.FC = () => {
     dispatch({ type: 'DELETE_ITEM', payload: { section, id } });
   };
 
+  const handleGenerateSummary = async () => {
+    setIsGeneratingSummary(true);
+    try {
+        if (!process.env.API_KEY) {
+            alert('API Key is not configured. Please set the API_KEY environment variable.');
+            setIsGeneratingSummary(false);
+            return;
+        }
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+        const experienceText = resumeData.experience.map(e => `${e.title} at ${e.company}`).join(', ');
+        const skillsText = resumeData.skills.map(s => s.name).join(', ');
+
+        const prompt = `Based on the following information, write a compelling and concise professional summary in about 3-4 sentences.
+        - Full Name: ${resumeData.profile.name}
+        - Professional Title: ${resumeData.profile.title}
+        - Experience: ${experienceText}
+        - Skills: ${skillsText}`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                systemInstruction: "You are an expert resume writer. Generate a professional summary that is concise, impactful, and tailored to the user's provided details. The tone should be professional and confident. Output only the summary text, with no extra formatting or introductory phrases.",
+            },
+        });
+        
+        const summaryText = response.text;
+        
+        if (summaryText) {
+            dispatch({ type: 'UPDATE_SUMMARY', payload: summaryText.trim() });
+        } else {
+            throw new Error("Failed to generate summary. The response was empty.");
+        }
+
+    } catch (error) {
+        console.error("Error generating summary:", error);
+        alert("Sorry, there was an error generating the summary. Please try again.");
+    } finally {
+        setIsGeneratingSummary(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <AccordionSection title={t('form.personalInfo')}>
@@ -146,7 +194,29 @@ const ResumeForm: React.FC = () => {
         </div>
       </AccordionSection>
 
-      <AccordionSection title={t('form.summary')}>
+      <AccordionSection
+        title={t('form.summary')}
+        actions={
+            <button
+                onClick={handleGenerateSummary}
+                disabled={isGeneratingSummary}
+                className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                aria-label="Generate summary with AI"
+            >
+                {isGeneratingSummary ? (
+                    <>
+                        <SpinnerIcon className="w-4 h-4" />
+                        Generating...
+                    </>
+                ) : (
+                    <>
+                        <MagicIcon />
+                        AI Generate
+                    </>
+                )}
+            </button>
+        }
+      >
           <FormTextarea 
             label={t('form.summary')}
             srOnlyLabel={true}
